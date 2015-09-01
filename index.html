@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" src="lib/jquery.text-overflow.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
 </head>
 <body>
 <style type="text/css">
-    #google-result-sim {
+    .google-result-sim {
         border: 1px solid rgb(26, 13, 171);
         width: 482px;
         height: auto;
     }
 
-    #google-result-sim #google-result-title {
+    .google-result-title {
         color: rgb(26, 13, 171);
         cursor: pointer;
         font-family: arial, sans-serif;
@@ -26,12 +25,10 @@
         text-decoration: underline;
         visibility: visible;
         white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
         width: inherit;
     }
 
-    #google-result-sim #google-result-url {
+    .google-result-url {
         color: rgb(0, 102, 33);
         display: block;
         font-family: arial, sans-serif;
@@ -41,11 +38,11 @@
         line-height: 16px;
         visibility: visible;
         white-space: nowrap;
-        width: auto;
+        width: inherit;
         zoom: 1;
     }
 
-    #google-result-sim #google-result-meta {
+    .google-result-meta {
         color: rgb(84, 84, 84);
         display: inline;
         font-family: arial, sans-serif;
@@ -54,7 +51,7 @@
         height: auto;
         line-height: 18.2000007629395px;
         visibility: visible;
-        width: auto;
+        width: inherit;
         -ms-word-wrap: break-word;
         word-wrap: break-word;
         zoom: 1;
@@ -86,157 +83,317 @@
     }
 </style>
 
-<div id="google-result-sim">
-    <div id="google-result-title">Learn Basic SEO for Landing Pages using WordPress</div>
-    <div id="google-result-url">http://mcculloughwebservices.com/2015/08/25/basic-seo-for-landing-pages/</div>
-    <div id="google-result-meta">
-        Learn basic SEO for landing pages using WordPress and Yoast SEO. Click to read all the details and see
-        step-by-step instructions with screenshots.
-    </div>
+<div id="google-result-sim" class="google-result-sim">
+    <div id="google-result-title" class="google-result-title"></div>
+    <div id="google-result-url" class="google-result-url"></div>
+    <div id="google-result-meta" class="google-result-meta"></div>
 </div>
 <form>
     <div class="form-control">
-        <label>Device:</label>
-        <select name="device">
+        <label for="device">Device:</label>
+        <select id="device">
             <option value="desktop" selected>Desktop</option>
             <option value="mobile">Mobile</option>
             <option value="tablet">Tablet</option>
         </select>
     </div>
     <div class="form-control">
-        <label>URL:</label>
-        <input name="url" placeholder="http://mcculloughwebservices.com/2015/08/25/basic-seo-for-landing-pages/">
+        <label for="url">URL:</label>
+        <input id="url">
     </div>
     <div class="form-control">
-        <label>Search Term:</label>
-        <input name="search-term" placeholder="SEO">
+        <label for="search-term">Search Term:</label>
+        <input id="search-term">
     </div>
     <div class="form-control">
-        <label>Title tag:</label>
-        <input name="title" placeholder="Learn Basic SEO for Landing Pages using WordPress">
+        <label for="title">Title tag:</label>
+        <input id="title">
     </div>
     <div class="form-control">
-        <label>META tag:</label>
-        <textarea name="meta" placeholder="Learn basic SEO for landing pages using WordPress and Yoast SEO. Click to read all the details and see step-by-step instructions with screenshots."></textarea>
+        <label for="meta">META tag:</label>
+        <textarea id="meta"></textarea>
     </div>
 </form>
 
 <script type="text/javascript">
-    function simulateGoogleResult() {
-        var url = $('input[name="url"]');
-        var searchTerm = $('input[name="search-term"]');
-        var title = $('input[name="title"]');
-        var meta = $('textarea[name="meta"]');
+    (function() {
+        var containerWidth = 482;
+        var metaWidth = 928;
 
-        url.keyup(function() {
-            $('#google-result-url').html(escapeHtml(url.val()));
+        var urlDefault = 'http://mcculloughwebservices.com/2015/08/25/basic-seo-for-landing-pages/';
+        var url = document.getElementById('url');
+        url.placeholder = urlDefault;
+
+        var searchTermDefault = 'SEO';
+        var searchTerm = document.getElementById('search-term');
+        searchTerm.placeholder = searchTermDefault;
+
+        var titleDefault = 'Learn Basic SEO for Landing Pages using WordPress';
+        var title = document.getElementById('title');
+        title.placeholder = titleDefault;
+
+        var metaDefault = 'Learn basic SEO for landing pages using WordPress and Yoast SEO. Click to read all the ' +
+                'details and see step-by-step instructions with screenshots.';
+        var meta = document.getElementById('meta');
+        meta.placeholder = metaDefault;
+
+        var device = document.getElementById('device');
+
+        var googleResultSim = document.getElementById('google-result-sim');
+        var googleResultTitle = document.getElementById('google-result-title');
+        var googleResultUrl = document.getElementById('google-result-url');
+        var googleResultMeta = document.getElementById('google-result-meta');
+
+        url.addEventListener('keyup', function() {
+            simulateGoogleResult();
+        });
+        searchTerm.addEventListener('keyup', function() {
+            simulateGoogleResult();
+        });
+        title.addEventListener('keyup', function() {
+            simulateGoogleResult();
+        });
+        meta.addEventListener('change', function() {
+            simulateGoogleResult();
+        });
+        meta.addEventListener('keyup', function() {
+            simulateGoogleResult();
+        });
+        meta.addEventListener('paste', function() {
+            simulateGoogleResult();
+        });
+        device.addEventListener('change', function() {
+            changeDevice();
         });
 
-        searchTerm.keyup(function() {
-            // search through the meta tag for things to bold
-        });
-
-        title.keyup(function() {
-            var titleVal = title.val() || 'Learn Basic SEO for Landing Pages using WordPress';
-            $('#google-result-title').text(titleVal);
-            $('#google-result-title').textOverflow({
-                autoUpdate: false,
-                trim: false,
-                wholeWord: true
-            });
-            console.log($('#google-result-title').text())
-        });
-
-        meta.on('change keyup paste', function() {
-            console.log(meta.val());
-            // need to handle the bold
-            $('#google-result-meta').html(boldSearchTerms(searchTerm.val(), meta.val()));
-        })
-    }
-
-    // http://stackoverflow.com/questions/282758/truncate-a-string-nicely-to-fit-within-a-given-pixel-width
-    function fitStringToWidth(str, width, className) {
-        // str    A string where html-entities are allowed but no tags.
-        // width  The maximum allowed width in pixels
-        // className  A CSS class name with the desired font-name and font-size. (optional)
-        // ----
-
-        //Create a span element that will be used to get the width
-        var span = document.createElement("span");
-        //Allow a classname to be set to get the right font-size.
-        if (className) span.className=className;
-        span.style.display='inline';
-        span.style.visibility = 'hidden';
-        span.style.padding = '0px';
-        document.body.appendChild(span);
-
-        var result = _escTag(str); // default to the whole string
-        span.innerHTML = result;
-        // Check if the string will fit in the allowed width. NOTE: if the width
-        // can't be determined (offsetWidth==0) the whole string will be returned.
-        if (span.offsetWidth > width) {
-            var posStart = 0, posMid, posEnd = str.length, posLength;
-            // Calculate (posEnd - posStart) integer division by 2 and
-            // assign it to posLength. Repeat until posLength is zero.
-            while (posLength = (posEnd - posStart) >> 1) {
-                posMid = posStart + posLength;
-                //Get the string from the beginning up to posMid;
-                span.innerHTML = _escTag(str.substring(0,posMid)) + '&hellip;';
-
-                // Check if the current width is too wide (set new end)
-                // or too narrow (set new start)
-                if ( span.offsetWidth > width ) posEnd = posMid; else posStart=posMid;
-            }
-
-            result = '<abbr title="' +
-                    str.replace("\"","&quot;") + '">' +
-                    _escTag(str.substring(0,posStart)) +
-                    '&hellip;<\/abbr>';
-        }
-        document.body.removeChild(span);
-        return result;
-    }
-
-    var entityMap = {
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': '&quot;',
-        "'": '&#39;',
-        "/": '&#x2F;'
-    };
-    function escapeHtml(string) {
-        return String(string).replace(/[&<>"'\/]/g, function (s) {
-            return entityMap[s];
-        });
-    }
-
-    function boldSearchTerms(searchTerms, string) {
-        var searchArray = searchTerms.split(' ');
-        var stringArray = string.split(' ');
-
-        var resultsArray = stringArray.map(function(cur, index, array) {
-            var isFound = false;
-            var results = cur;
-
-            for (var ii = 0; ii < searchArray.length; ii++) {
-                if (cur.indexOf(searchArray[ii]) >= 0) {
-                    isFound = true;
+        function changeDevice() {
+            switch (device.value) {
+                case 'desktop':
+                    containerWidth = 482;
+                    metaWidth = 928;
                     break;
+                case 'mobile':
+                    containerWidth = 550;
+                    metaWidth = 757;
+                    break;
+                case 'tablet':
+                    containerWidth = 550;
+                    metaWidth = 1035;
+                    break;
+            }
+
+            googleResultSim.style.width = containerWidth + 'px';
+
+            simulateGoogleResult();
+        }
+
+        function simulateGoogleResult() {
+            var searchTermVal = escapeHtml(searchTerm.value) || searchTermDefault;
+
+            var urlVal = escapeHtml(url.value) || urlDefault;
+            if (urlVal.slice(0, 7) === 'http://') {
+                urlVal = urlVal.slice(7);
+            } else if (urlVal.slice(0, 17) === 'http:&#x2F;&#x2F;') {
+                urlVal = urlVal.slice(17);
+            }
+            urlVal = boldSearchTerms(searchTermVal, urlVal, true);
+
+            var titleVal = escapeHtml(title.value) || titleDefault;
+
+            var metaVal = escapeHtml(meta.value) || metaDefault;
+            metaVal = boldSearchTerms(searchTermVal, metaVal, false);
+
+            titleVal = fitStringToWidth(titleVal, containerWidth, 'google-result-title', true, undefined);
+            googleResultTitle.innerHTML = titleVal;
+
+            googleResultUrl.innerHTML = fitStringToWidth(urlVal, containerWidth, 'google-result-url', false);
+
+            googleResultMeta.innerHTML = fitStringToWidth(metaVal, metaWidth, 'google-result-meta', true);
+        }
+
+        // inspired by @some's answer
+        // http://stackoverflow.com/questions/282758/truncate-a-string-nicely-to-fit-within-a-given-pixel-width
+        // str - the string to fix
+        // width - width in pixels of the container
+        // className - the class to apply to the string to get the correct font size
+        // truncateOnWord - boolean.  True if you do not want the function to truncate mid-word.
+        function fitStringToWidth(str, width, className, truncateOnWord) {
+            var result = str;
+
+            var span = document.createElement('span');
+            if (className) {
+                span.className = className;
+            }
+            span.style.display = 'inline';
+            span.style.visibility = 'hidden';
+            span.style.padding = '0px';
+            document.body.appendChild(span);
+            span.innerHTML = result;
+
+            while (span.offsetWidth > width) {
+                // at the very least, we're slicing off the last char
+                var sliceIndex = result.length - 2;
+
+                // slice off the ellipsis if there's one on the end
+                if (result.slice(-7) === '&#8230;') {
+                    sliceIndex -= 7;
                 }
+
+                result = result.slice(0, sliceIndex);
+
+                if (truncateOnWord) {
+                    // the prior slice already cleaned up the end of the string
+                    // now find the last word
+                    var lastIndex = result.lastIndexOf(' ');
+
+                    if (lastIndex === -1) {
+                        // it's one big word, so switch modes and we'll fix it up next time
+                        truncateOnWord = false;
+                    } else {
+                        // slice off the last word but leaving a trailing space
+                        result = result.slice(0, lastIndex + 1);
+                    }
+                }
+
+                // add on the ellipsis
+                result += '&#8230;';
+                span.innerHTML = result;
             }
 
-            if (isFound) {
-                results = '<b>' + results + '</b>';
+            document.body.removeChild(span);
+            return result;
+        }
+
+        var entityMap = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': '&quot;',
+            "'": '&#39;',
+            "/": '&#x2F;'
+        };
+        function escapeHtml(string) {
+            return String(string).replace(/[&<>"'\/]/g, function (s) {
+                return entityMap[s];
+            });
+        }
+
+        function boldSearchTerms(searchTerms, string, isUrl) {
+            var searchArray = searchTerms.split(' ');
+            var stringArray = [];
+            var resultStr = '';
+
+            if (isUrl) {
+                stringArray = splitUrl(string);
+            } else {
+                stringArray = splitNonUrl(string);
             }
 
-            return results;
-        });
+            stringArray.forEach(function(cur) {
+                var result = cur;
 
-        return resultsArray.join(' ');
-    }
+                if (!cur.isPunctuation) {
+                    var isFound = false;
 
-    $(document).ready(simulateGoogleResult());
+                    for (var ii = 0; ii < searchArray.length; ii++) {
+                        if (cur.value.toLowerCase().indexOf(searchArray[ii].toLowerCase()) >= 0) {
+                            isFound = true;
+                            break;
+                        }
+                    }
+
+                    if (isFound) {
+                        result.value = '<b>' + result.value + '</b>';
+                    }
+
+                }
+
+                resultStr += result.value;
+
+                if (!isUrl) {
+                    resultStr += ' ';
+                }
+            });
+
+            return resultStr.trim();
+        }
+
+        function splitNonUrl(string) {
+            return resultArr = string.split(' ').map(function(cur) {
+                return {
+                    value: cur,
+                    isPunctuation: false
+                };
+            });
+        }
+
+        function splitUrl(string) {
+            var resultArr = [];
+
+            var buffer = '';
+            var isPunctuation = false;
+            for (var ii = 0; ii < string.length; ii++) {
+                var char = string.charAt(ii);
+
+                if (char === '/' || char === '-' || char === ':' || char === '.') {
+                    if (!isPunctuation) {
+                        // write out the buffer
+                        if (buffer !== '') {
+                            resultArr.push({
+                                value: buffer,
+                                isPunctuation: isPunctuation
+                            });
+                        }
+
+                        // switch to saving punctuation
+                        buffer = '';
+                        isPunctuation = true;
+                    }
+                } else if (char === '&' && string.slice(ii, ii + 6) === '&#x2F;') {
+                    if (!isPunctuation) {
+                        // write out the buffer
+                        if (buffer !== '') {
+                            resultArr.push({
+                                value: buffer,
+                                isPunctuation: isPunctuation
+                            });
+                        }
+
+                        // switch to saving punctuation & handle special case with url encoded slash
+                        buffer = '&#x2F;';
+                        isPunctuation = true;
+                        char = '';
+                        ii += 5;
+                    }
+                } else {
+                    if (isPunctuation) {
+                        // write out the buffer
+                        if (buffer !== '') {
+                            resultArr.push({
+                                value: buffer,
+                                isPunctuation: isPunctuation
+                            });
+                        }
+
+                        // switch to saving letters
+                        buffer = '';
+                        isPunctuation = false;
+                    }
+                }
+
+                buffer += char;
+            }
+
+            resultArr.push({
+                value: buffer,
+                isPunctuation: isPunctuation
+            });
+
+            return resultArr;
+        }
+
+        changeDevice();
+    })();
 </script>
 
 </body>
