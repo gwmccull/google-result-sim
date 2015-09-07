@@ -58,18 +58,27 @@
     }
 
     label {
-        width: 120px;
-        display: inline-block;
+        width: 100%;
+        display: block;
         font-weight: bold;
         font-size: 16px;
         color: rgb(84, 84, 84);
-        margin-bottom: 10px;
+        margin-top: 15px;
     }
 
     input, textarea {
-        width: 356px;
+        width: 100%;
+        outline: none;
+        padding: 3px 0px 3px 3px;
+        margin: 5px 1px 3px 0px;
+        border: 1px solid #DDDDDD;
+        display: block;
     }
-    
+
+    input:focus, textarea:focus {
+        border: 1px solid #00e;
+    }
+
     textarea {
         height: 4em;
     }
@@ -81,6 +90,15 @@
     form {
         margin-top: 20px;
     }
+
+    small {
+        display: block;
+        color: #bbb;
+    }
+
+    .error-outline {
+        border: 1px solid #e00;
+    }
 </style>
 
 <div id="google-result-sim" class="google-result-sim">
@@ -91,27 +109,30 @@
 <form>
     <div class="form-control">
         <label for="device">Device:</label>
-        <select id="device">
-            <option value="desktop" selected>Desktop</option>
-            <option value="mobile">Mobile</option>
-            <option value="tablet">Tablet</option>
-        </select>
+        <span id="device">Desktop</span>
+        <!--<select id="device">-->
+        <!--<option value="desktop" selected>Desktop</option>-->
+        <!--<option value="mobile">Mobile</option>-->
+        <!--<option value="tablet">Tablet</option>-->
+        <!--</select>-->
     </div>
     <div class="form-control">
-        <label for="url">URL:</label>
-        <input id="url">
+        <label for="urlInput">URL:</label>
+        <input id="urlInput" type="text">
     </div>
     <div class="form-control">
         <label for="search-term">Search Term:</label>
-        <input id="search-term">
+        <input id="search-term" type="text">
     </div>
     <div class="form-control">
-        <label for="title">Title tag:</label>
-        <input id="title">
+        <label for="titleInput">Title Tag:</label>
+        <input id="titleInput" type="text">
+        <small id="title-size"></small>
     </div>
     <div class="form-control">
-        <label for="meta">META tag:</label>
+        <label for="meta">Meta Description Tag:</label>
         <textarea id="meta"></textarea>
+        <small id="meta-size"></small>
     </div>
 </form>
 
@@ -120,22 +141,24 @@
         var containerWidth = 482;
         var metaWidth = 928;
 
-        var urlDefault = 'http://mcculloughwebservices.com/2015/08/25/basic-seo-for-landing-pages/';
-        var url = document.getElementById('url');
+        var urlDefault = 'http://www.loremipsum.com/';
+        var url = document.getElementById('urlInput');
         url.placeholder = urlDefault;
 
-        var searchTermDefault = 'SEO';
+        var searchTermDefault = 'Lorem dolor';
         var searchTerm = document.getElementById('search-term');
         searchTerm.placeholder = searchTermDefault;
 
-        var titleDefault = 'Learn Basic SEO for Landing Pages using WordPress';
-        var title = document.getElementById('title');
+        var titleDefault = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
+        var title = document.getElementById('titleInput');
         title.placeholder = titleDefault;
+        var titleSize = document.getElementById('title-size');
 
-        var metaDefault = 'Learn basic SEO for landing pages using WordPress and Yoast SEO. Click to read all the ' +
-                'details and see step-by-step instructions with screenshots.';
+        var metaDefault = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ' +
+                'ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nost';
         var meta = document.getElementById('meta');
         meta.placeholder = metaDefault;
+        var metaSize = document.getElementById('meta-size');
 
         var device = document.getElementById('device');
 
@@ -168,10 +191,6 @@
 
         function changeDevice() {
             switch (device.value) {
-                case 'desktop':
-                    containerWidth = 482;
-                    metaWidth = 928;
-                    break;
                 case 'mobile':
                     containerWidth = 550;
                     metaWidth = 757;
@@ -179,6 +198,11 @@
                 case 'tablet':
                     containerWidth = 550;
                     metaWidth = 1035;
+                    break;
+                case 'desktop':
+                default:
+                    containerWidth = 482;
+                    metaWidth = 928;
                     break;
             }
 
@@ -204,11 +228,25 @@
             metaVal = boldSearchTerms(searchTermVal, metaVal, false);
 
             titleVal = fitStringToWidth(titleVal, containerWidth, 'google-result-title', true, undefined);
-            googleResultTitle.innerHTML = titleVal;
+            googleResultTitle.innerHTML = titleVal.value;
+            titleSize.innerHTML = titleVal.width + 'px of ' + containerWidth + 'px';
+            if (titleVal.overflow) {
+                title.className = 'error-outline';
+            } else {
+                title.className = '';
+            }
 
-            googleResultUrl.innerHTML = fitStringToWidth(urlVal, containerWidth, 'google-result-url', false);
+            urlVal = fitStringToWidth(urlVal, containerWidth, 'google-result-url', false);
+            googleResultUrl.innerHTML = urlVal.value;
 
-            googleResultMeta.innerHTML = fitStringToWidth(metaVal, metaWidth, 'google-result-meta', true);
+            metaVal = fitStringToWidth(metaVal, metaWidth, 'google-result-meta', true);
+            googleResultMeta.innerHTML = metaVal.value;
+            metaSize.innerHTML = metaVal.width + 'px of ' + metaWidth + 'px';
+            if (metaVal.overflow) {
+                meta.className = 'error-outline';
+            } else {
+                meta.className = '';
+            }
         }
 
         // inspired by @some's answer
@@ -218,7 +256,11 @@
         // className - the class to apply to the string to get the correct font size
         // truncateOnWord - boolean.  True if you do not want the function to truncate mid-word.
         function fitStringToWidth(str, width, className, truncateOnWord) {
-            var result = str;
+            var result = {
+                value: str,
+                width: 0,
+                overflow: false
+            };
 
             var span = document.createElement('span');
             if (className) {
@@ -228,36 +270,38 @@
             span.style.visibility = 'hidden';
             span.style.padding = '0px';
             document.body.appendChild(span);
-            span.innerHTML = result;
+            span.innerHTML = result.value;
+            result.width = span.offsetWidth;
 
             while (span.offsetWidth > width) {
                 // at the very least, we're slicing off the last char
-                var sliceIndex = result.length - 2;
+                var sliceIndex = result.value.length - 2;
 
                 // slice off the ellipsis if there's one on the end
-                if (result.slice(-7) === '&#8230;') {
+                if (result.value.slice(-7) === '&#8230;') {
                     sliceIndex -= 7;
                 }
 
-                result = result.slice(0, sliceIndex);
+                result.value = result.value.slice(0, sliceIndex);
 
                 if (truncateOnWord) {
                     // the prior slice already cleaned up the end of the string
                     // now find the last word
-                    var lastIndex = result.lastIndexOf(' ');
+                    var lastIndex = result.value.lastIndexOf(' ');
 
                     if (lastIndex === -1) {
                         // it's one big word, so switch modes and we'll fix it up next time
                         truncateOnWord = false;
                     } else {
                         // slice off the last word but leaving a trailing space
-                        result = result.slice(0, lastIndex + 1);
+                        result.value = result.value.slice(0, lastIndex + 1);
                     }
                 }
 
                 // add on the ellipsis
-                result += '&#8230;';
-                span.innerHTML = result;
+                result.value += '&#8230;';
+                result.overflow = true;
+                span.innerHTML = result.value;
             }
 
             document.body.removeChild(span);
@@ -395,6 +439,5 @@
         changeDevice();
     })();
 </script>
-
 </body>
 </html>
