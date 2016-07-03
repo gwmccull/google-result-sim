@@ -9,7 +9,7 @@
 <style type="text/css">
     .google-result-sim {
         border: 1px solid rgb(26, 13, 171);
-        width: 482px;
+        width: 600px;
         height: auto;
     }
 
@@ -138,7 +138,7 @@
 
 <script type="text/javascript">
     (function() {
-        var containerWidth = 482;
+        var containerWidth = 600;
         var metaWidth = 928;
 
         var urlDefault = 'http://www.loremipsum.com/';
@@ -201,7 +201,7 @@
                     break;
                 case 'desktop':
                 default:
-                    containerWidth = 482;
+                    containerWidth = 600;
                     metaWidth = 928;
                     break;
             }
@@ -227,7 +227,7 @@
             var metaVal = escapeHtml(meta.value) || metaDefault;
             metaVal = boldSearchTerms(searchTermVal, metaVal, false);
 
-            titleVal = fitStringToWidth(titleVal, containerWidth, 'google-result-title', true, undefined);
+            titleVal = fitStringToWidth(titleVal, containerWidth, 'google-result-title', true);
             googleResultTitle.innerHTML = titleVal.value;
             titleSize.innerHTML = titleVal.width + 'px of ' + containerWidth + 'px';
             if (titleVal.overflow) {
