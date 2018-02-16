@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
 </head>
 <body>
 <style type="text/css">
@@ -11,6 +10,7 @@
         border: 1px solid rgb(26, 13, 171);
         width: 600px;
         height: auto;
+        margin-bottom: 10px;
     }
 
     .google-result-title {
@@ -97,14 +97,23 @@
     }
 
     .error-outline {
-        border: 1px solid #e00;
+        outline: none !important;
+        border: 1px solid #e00 !important;
+    }
+    .error-text {
+        color: #e00;
     }
 </style>
 
-<div id="google-result-sim" class="google-result-sim">
-    <div id="google-result-title" class="google-result-title"></div>
-    <div id="google-result-url" class="google-result-url"></div>
-    <div id="google-result-meta" class="google-result-meta"></div>
+<div id="google-result-sim-px" class="google-result-sim">
+    <div id="google-result-title-px" class="google-result-title"></div>
+    <div id="google-result-url-px" class="google-result-url"></div>
+    <div id="google-result-meta-px" class="google-result-meta"></div>
+</div>
+<div id="google-result-sim-char" class="google-result-sim">
+    <div id="google-result-title-char" class="google-result-title"></div>
+    <div id="google-result-url-char" class="google-result-url"></div>
+    <div id="google-result-meta-char" class="google-result-meta"></div>
 </div>
 <form class="google-sim">
     <div class="form-control">
@@ -132,14 +141,16 @@
     <div class="form-control">
         <label for="meta">Meta Description Tag:</label>
         <textarea id="meta"></textarea>
-        <small id="meta-size"></small>
+        <small id="meta-size-px"></small>
+        <small id="meta-size-char"></small>
     </div>
 </form>
 
 <script type="text/javascript">
     (function() {
         var containerWidth = 600;
-        var metaWidth = 928;
+        var metaWidthPx = 928;
+        var metaWidthChar = 320;
 
         var urlDefault = 'http://www.loremipsum.com/';
         var url = document.getElementById('urlInput');
@@ -158,14 +169,19 @@
                 'ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nost';
         var meta = document.getElementById('meta');
         meta.placeholder = metaDefault;
-        var metaSize = document.getElementById('meta-size');
+        var metaSizePx = document.getElementById('meta-size-px');
+        var metaSizeChar = document.getElementById('meta-size-char');
 
         var device = document.getElementById('device');
 
-        var googleResultSim = document.getElementById('google-result-sim');
-        var googleResultTitle = document.getElementById('google-result-title');
-        var googleResultUrl = document.getElementById('google-result-url');
-        var googleResultMeta = document.getElementById('google-result-meta');
+        var googleResultSimPx = document.getElementById('google-result-sim-px');
+        var googleResultTitlePx = document.getElementById('google-result-title-px');
+        var googleResultUrlPx = document.getElementById('google-result-url-px');
+        var googleResultMetaPx = document.getElementById('google-result-meta-px');
+        var googleResultSimChar = document.getElementById('google-result-sim-char');
+        var googleResultTitleChar = document.getElementById('google-result-title-char');
+        var googleResultUrlChar = document.getElementById('google-result-url-char');
+        var googleResultMetaChar = document.getElementById('google-result-meta-char');
 
         url.addEventListener('keyup', function() {
             simulateGoogleResult();
@@ -193,20 +209,20 @@
             switch (device.value) {
                 case 'mobile':
                     containerWidth = 550;
-                    metaWidth = 757;
+                    metaWidthPx = 757;
                     break;
                 case 'tablet':
                     containerWidth = 550;
-                    metaWidth = 1035;
+                    metaWidthPx = 1035;
                     break;
                 case 'desktop':
                 default:
                     containerWidth = 600;
-                    metaWidth = 928;
+                    metaWidthPx = 928;
                     break;
             }
 
-            googleResultSim.style.width = containerWidth + 'px';
+            googleResultSimPx.style.width = containerWidth + 'px';
 
             simulateGoogleResult();
         }
@@ -224,11 +240,14 @@
 
             var titleVal = escapeHtml(title.value) || titleDefault;
 
-            var metaVal = escapeHtml(meta.value) || metaDefault;
-            metaVal = boldSearchTerms(searchTermVal, metaVal, false);
+            var metaValPx = escapeHtml(meta.value) || metaDefault;
+            metaValPx = boldSearchTerms(searchTermVal, metaValPx, false);
+            var metaValChar = fitStringToCharCount(meta.value || metaDefault, metaWidthChar, true);
+            metaValChar.value = boldSearchTerms(searchTermVal, escapeHtml(metaValChar.value), false);
 
             titleVal = fitStringToWidth(titleVal, containerWidth, 'google-result-title', true);
-            googleResultTitle.innerHTML = titleVal.value;
+            googleResultTitlePx.innerHTML = titleVal.value;
+            googleResultTitleChar.innerHTML = titleVal.value;
             titleSize.innerHTML = titleVal.width + 'px of ' + containerWidth + 'px';
             if (titleVal.overflow) {
                 title.className = 'error-outline';
@@ -237,15 +256,23 @@
             }
 
             urlVal = fitStringToWidth(urlVal, containerWidth, 'google-result-url', false);
-            googleResultUrl.innerHTML = urlVal.value;
+            googleResultUrlPx.innerHTML = urlVal.value;
+            googleResultUrlChar.innerHTML = urlVal.value;
 
-            metaVal = fitStringToWidth(metaVal, metaWidth, 'google-result-meta', true);
-            googleResultMeta.innerHTML = metaVal.value;
-            metaSize.innerHTML = metaVal.width + 'px of ' + metaWidth + 'px';
-            if (metaVal.overflow) {
-                meta.className = 'error-outline';
+            metaValPx = fitStringToWidth(metaValPx, metaWidthPx, 'google-result-meta', true, true);
+            googleResultMetaPx.innerHTML = metaValPx.value;
+            googleResultMetaChar.innerHTML = metaValChar.value;
+            metaSizePx.innerHTML = metaValPx.width + 'px of ' + metaWidthPx + 'px';
+            metaSizeChar.innerHTML = metaValChar.width + ' of ' + metaWidthChar + ' characters';
+            if (metaValPx.overflow) {
+                metaSizePx.className = 'error-text';
             } else {
-                meta.className = '';
+                metaSizePx.className = '';
+            }
+            if (metaValChar.overflow) {
+                metaSizeChar.className = 'error-text';
+            } else {
+                metaSizeChar.className = '';
             }
         }
 
@@ -269,6 +296,7 @@
             span.style.display = 'inline';
             span.style.visibility = 'hidden';
             span.style.padding = '0px';
+            span.style['white-space'] = 'nowrap';
             document.body.appendChild(span);
             span.innerHTML = result.value;
             result.width = span.offsetWidth;
@@ -308,6 +336,41 @@
             return result;
         }
 
+        function fitStringToCharCount(str, charCount, truncateOnWord) {
+            if (!str) {
+                str = "";
+            }
+
+            var result = {
+                value: str,
+                width: str.length,
+                overflow: str.length > charCount
+            };
+
+            if (result.overflow) {
+                if (truncateOnWord) {
+                    // now find the last word
+                    var lastIndex = result.value.lastIndexOf(' ');
+
+                    // check to see if the last word isn't ridiculously long
+                    if (lastIndex > charCount - 20 && lastIndex < charCount - 1) {
+                        // slice off the last word but leaving a trailing space
+                        result.value = result.value.slice(0, lastIndex + 1);
+                    } else {
+                        // just truncate the text
+                        result.value = result.value.slice(0, charCount - 1)
+                    }
+                } else {
+                    // just truncate the text
+                    result.value = result.value.slice(0, charCount - 1)
+                }
+                // add on the ellipsis
+                result.value += '&#8230;';
+            }
+
+            return result;
+        }
+
         var entityMap = {
             "&": "&amp;",
             "<": "&lt;",
@@ -323,7 +386,7 @@
         }
 
         function boldSearchTerms(searchTerms, string, isUrl) {
-            var searchArray = searchTerms.split(' ');
+            var searchArray = searchTerms.split(' ').filter(function(str) { return !!str.length });
             var stringArray = [];
             var resultStr = '';
 
