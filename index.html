@@ -1,510 +1,487 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title></title>
 </head>
+
 <body>
-<style type="text/css">
-    .google-result-sim {
-        border: 1px solid rgb(26, 13, 171);
-        width: 600px;
-        height: auto;
-        margin-bottom: 10px;
-    }
+    <style type="text/css">
+        .google-result-sim {
+            border: 1px solid rgb(26, 13, 171);
+            width: 600px;
+            height: auto;
+            margin-bottom: 10px;
+        }
 
-    .google-result-title {
-        color: rgb(26, 13, 171);
-        cursor: pointer;
-        font-family: arial, sans-serif;
-        font-size: 18px;
-        font-weight: normal;
-        height: auto;
-        line-height: 21.6000003814697px;
-        list-style-type: decimal;
-        text-decoration: underline;
-        visibility: visible;
-        white-space: nowrap;
-        width: inherit;
-    }
+        .google-result-title {
+            color: rgb(26, 13, 171);
+            cursor: pointer;
+            font-family: arial, sans-serif;
+            font-size: 18px;
+            font-weight: normal;
+            height: auto;
+            line-height: 21.6000003814697px;
+            list-style-type: decimal;
+            text-decoration: underline;
+            visibility: visible;
+            white-space: nowrap;
+            width: inherit;
+        }
 
-    .google-result-url {
-        color: rgb(0, 102, 33);
-        display: block;
-        font-family: arial, sans-serif;
-        font-size: 14px;
-        font-weight: normal;
-        height: auto;
-        line-height: 16px;
-        visibility: visible;
-        white-space: nowrap;
-        width: inherit;
-        zoom: 1;
-    }
+        .google-result-url {
+            color: rgb(0, 102, 33);
+            display: block;
+            font-family: arial, sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+            height: auto;
+            line-height: 16px;
+            visibility: visible;
+            white-space: nowrap;
+            width: inherit;
+            zoom: 1;
+        }
 
-    .google-result-meta {
-        color: rgb(84, 84, 84);
-        display: inline;
-        font-family: arial, sans-serif;
-        font-size: 13px;
-        font-weight: normal;
-        height: auto;
-        line-height: 18.2000007629395px;
-        visibility: visible;
-        width: inherit;
-        -ms-word-wrap: break-word;
-        word-wrap: break-word;
-        zoom: 1;
-    }
+        .google-result-meta {
+            color: rgb(84, 84, 84);
+            display: inline;
+            font-family: arial, sans-serif;
+            font-size: 13px;
+            font-weight: normal;
+            height: auto;
+            line-height: 18.2000007629395px;
+            visibility: visible;
+            width: inherit;
+            -ms-word-wrap: break-word;
+            word-wrap: break-word;
+            zoom: 1;
+        }
 
-    label {
-        width: 100%;
-        display: block;
-        font-weight: bold;
-        font-size: 16px;
-        color: rgb(84, 84, 84);
-        margin-top: 15px;
-    }
+        label {
+            width: 100%;
+            display: block;
+            font-weight: bold;
+            font-size: 16px;
+            color: rgb(84, 84, 84);
+            margin-top: 15px;
+        }
 
-    form.google-sim input, form.google-sim textarea {
-        width: 100%;
-        outline: none;
-        padding: 3px 0px 3px 3px;
-        margin: 5px 1px 3px 0px;
-        border: 1px solid #DDDDDD;
-        display: block;
-    }
+        form.google-sim input,
+        form.google-sim textarea {
+            width: 100%;
+            outline: none;
+            padding: 3px 0px 3px 3px;
+            margin: 5px 1px 3px 0px;
+            border: 1px solid #DDDDDD;
+            display: block;
+        }
 
-    input:focus, textarea:focus {
-        border: 1px solid #00e;
-    }
+        input:focus,
+        textarea:focus {
+            border: 1px solid #00e;
+        }
 
-    textarea {
-        height: 4em;
-    }
+        textarea {
+            height: 4em;
+        }
 
-    select {
-        width: 362px;
-    }
+        select {
+            width: 362px;
+        }
 
-    form {
-        margin-top: 20px;
-    }
+        form {
+            margin-top: 20px;
+        }
 
-    small {
-        display: block;
-        color: #bbb;
-    }
+        small {
+            display: block;
+            color: #bbb;
+        }
 
-    .error-outline {
-        outline: none !important;
-        border: 1px solid #e00 !important;
-    }
-    .error-text {
-        color: #e00;
-    }
-</style>
+        .error-outline {
+            outline: none !important;
+            border: 1px solid #e00 !important;
+        }
 
-<h2>Simulated view for guidelines before 2018</h2>
-<div id="google-result-sim-px" class="google-result-sim">
-    <div id="google-result-title-px" class="google-result-title"></div>
-    <div id="google-result-url-px" class="google-result-url"></div>
-    <div id="google-result-meta-px" class="google-result-meta"></div>
-</div>
-<h2>Simulated view for 2018 guidelines</h2>
-<div id="google-result-sim-char" class="google-result-sim">
-    <div id="google-result-title-char" class="google-result-title"></div>
-    <div id="google-result-url-char" class="google-result-url"></div>
-    <div id="google-result-meta-char" class="google-result-meta"></div>
-</div>
-<form class="google-sim">
-    <div class="form-control">
-        <label for="device">Device:</label>
-        <span id="device">Desktop</span>
-        <!--<select id="device">-->
-        <!--<option value="desktop" selected>Desktop</option>-->
-        <!--<option value="mobile">Mobile</option>-->
-        <!--<option value="tablet">Tablet</option>-->
-        <!--</select>-->
+        .error-text {
+            color: #e00;
+        }
+    </style>
+
+    <h2>Simulated view for guidelines before 2018</h2>
+    <div id="google-result-sim-px" class="google-result-sim">
+        <div id="google-result-title-px" class="google-result-title"></div>
+        <div id="google-result-url-px" class="google-result-url"></div>
+        <div id="google-result-meta-px" class="google-result-meta"></div>
     </div>
-    <div class="form-control">
-        <label for="urlInput">URL:</label>
-        <input id="urlInput" type="text">
+    <h2>Simulated view for 2018 guidelines</h2>
+    <div id="google-result-sim-char" class="google-result-sim">
+        <div id="google-result-title-char" class="google-result-title"></div>
+        <div id="google-result-url-char" class="google-result-url"></div>
+        <div id="google-result-meta-char" class="google-result-meta"></div>
     </div>
-    <div class="form-control">
-        <label for="search-term">Search Term:</label>
-        <input id="search-term" type="text">
-    </div>
-    <div class="form-control">
-        <label for="titleInput">Title Tag:</label>
-        <input id="titleInput" type="text">
-        <small id="title-size"></small>
-    </div>
-    <div class="form-control">
-        <label for="meta">Meta Description Tag:</label>
-        <textarea id="meta"></textarea>
-        <small id="meta-size-px"></small>
-        <small id="meta-size-char"></small>
-    </div>
-</form>
+    <form class="google-sim">
+        <div class="form-group">
+            <label for="titleInput">Title Tag:</label>
+            <input id="titleInput" type="text">
+            <small id="title-size"></small>
+        </div>
+        <div class="form-group">
+            <label for="meta">Meta Description Tag:</label>
+            <textarea id="meta"></textarea>
+            <small id="meta-size-px"></small>
+            <small id="meta-size-char"></small>
+        </div>
+        <div class="form-group">
+            <label for="urlInput">URL:</label>
+            <input id="urlInput" type="text">
+        </div>
+        <div class="form-group">
+            <label for="search-term">Search Term:</label>
+            <input id="search-term" type="text">
+        </div>
+    </form>
 
-<script type="text/javascript">
-    (function() {
-        var containerWidth = 600;
-        var metaWidthPx = 928;
-        var metaWidthChar = 320;
+    <script type="text/javascript">
+        (function () {
+            var containerWidth = 600;
+            var metaWidthPx = 928;
+            var metaWidthChar = 320;
 
-        var urlDefault = 'http://www.loremipsum.com/';
-        var url = document.getElementById('urlInput');
-        url.placeholder = urlDefault;
+            var urlDefault = 'http://www.loremipsum.com/';
+            var url = document.getElementById('urlInput');
+            url.placeholder = urlDefault;
 
-        var searchTermDefault = 'Lorem dolor';
-        var searchTerm = document.getElementById('search-term');
-        searchTerm.placeholder = searchTermDefault;
+            var searchTermDefault = 'Lorem dolor';
+            var searchTerm = document.getElementById('search-term');
+            searchTerm.placeholder = searchTermDefault;
 
-        var titleDefault = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
-        var title = document.getElementById('titleInput');
-        title.placeholder = titleDefault;
-        var titleSize = document.getElementById('title-size');
+            var titleDefault = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit';
+            var title = document.getElementById('titleInput');
+            title.placeholder = titleDefault;
+            var titleSize = document.getElementById('title-size');
 
-        var metaDefault = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ' +
+            var metaDefault = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ' +
                 'ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nost';
-        var meta = document.getElementById('meta');
-        meta.placeholder = metaDefault;
-        var metaSizePx = document.getElementById('meta-size-px');
-        var metaSizeChar = document.getElementById('meta-size-char');
+            var meta = document.getElementById('meta');
+            meta.placeholder = metaDefault;
+            var metaSizePx = document.getElementById('meta-size-px');
+            var metaSizeChar = document.getElementById('meta-size-char');
 
-        var device = document.getElementById('device');
+            var device = document.getElementById('device');
 
-        var googleResultSimPx = document.getElementById('google-result-sim-px');
-        var googleResultTitlePx = document.getElementById('google-result-title-px');
-        var googleResultUrlPx = document.getElementById('google-result-url-px');
-        var googleResultMetaPx = document.getElementById('google-result-meta-px');
-        var googleResultSimChar = document.getElementById('google-result-sim-char');
-        var googleResultTitleChar = document.getElementById('google-result-title-char');
-        var googleResultUrlChar = document.getElementById('google-result-url-char');
-        var googleResultMetaChar = document.getElementById('google-result-meta-char');
+            var googleResultSimPx = document.getElementById('google-result-sim-px');
+            var googleResultTitlePx = document.getElementById('google-result-title-px');
+            var googleResultUrlPx = document.getElementById('google-result-url-px');
+            var googleResultMetaPx = document.getElementById('google-result-meta-px');
+            var googleResultSimChar = document.getElementById('google-result-sim-char');
+            var googleResultTitleChar = document.getElementById('google-result-title-char');
+            var googleResultUrlChar = document.getElementById('google-result-url-char');
+            var googleResultMetaChar = document.getElementById('google-result-meta-char');
 
-        url.addEventListener('keyup', function() {
-            simulateGoogleResult();
-        });
-        searchTerm.addEventListener('keyup', function() {
-            simulateGoogleResult();
-        });
-        title.addEventListener('keyup', function() {
-            simulateGoogleResult();
-        });
-        meta.addEventListener('change', function() {
-            simulateGoogleResult();
-        });
-        meta.addEventListener('keyup', function() {
-            simulateGoogleResult();
-        });
-        meta.addEventListener('paste', function() {
-            simulateGoogleResult();
-        });
-        device.addEventListener('change', function() {
-            changeDevice();
-        });
+            url.addEventListener('keyup', function () {
+                simulateGoogleResult();
+            });
+            searchTerm.addEventListener('keyup', function () {
+                simulateGoogleResult();
+            });
+            title.addEventListener('keyup', function () {
+                simulateGoogleResult();
+            });
+            meta.addEventListener('change', function () {
+                simulateGoogleResult();
+            });
+            meta.addEventListener('keyup', function () {
+                simulateGoogleResult();
+            });
+            meta.addEventListener('paste', function () {
+                simulateGoogleResult();
+            });
 
-        function changeDevice() {
-            switch (device.value) {
-                case 'mobile':
-                    containerWidth = 550;
-                    metaWidthPx = 757;
-                    break;
-                case 'tablet':
-                    containerWidth = 550;
-                    metaWidthPx = 1035;
-                    break;
-                case 'desktop':
-                default:
-                    containerWidth = 600;
-                    metaWidthPx = 928;
-                    break;
+            function initialize() {
+                googleResultSimPx.style.width = containerWidth + 'px';
+                simulateGoogleResult();
             }
 
-            googleResultSimPx.style.width = containerWidth + 'px';
+            function simulateGoogleResult() {
+                var searchTermVal = escapeHtml(searchTerm.value) || searchTermDefault;
 
-            simulateGoogleResult();
-        }
+                var urlVal = escapeHtml(url.value) || urlDefault;
+                if (urlVal.slice(0, 7) === 'http://') {
+                    urlVal = urlVal.slice(7);
+                } else if (urlVal.slice(0, 17) === 'http:&#x2F;&#x2F;') {
+                    urlVal = urlVal.slice(17);
+                }
+                urlVal = boldSearchTerms(searchTermVal, urlVal, true);
 
-        function simulateGoogleResult() {
-            var searchTermVal = escapeHtml(searchTerm.value) || searchTermDefault;
+                var titleVal = escapeHtml(title.value) || titleDefault;
 
-            var urlVal = escapeHtml(url.value) || urlDefault;
-            if (urlVal.slice(0, 7) === 'http://') {
-                urlVal = urlVal.slice(7);
-            } else if (urlVal.slice(0, 17) === 'http:&#x2F;&#x2F;') {
-                urlVal = urlVal.slice(17);
-            }
-            urlVal = boldSearchTerms(searchTermVal, urlVal, true);
+                var metaValPx = escapeHtml(meta.value) || metaDefault;
+                metaValPx = boldSearchTerms(searchTermVal, metaValPx, false);
+                var metaValChar = fitStringToCharCount(meta.value || metaDefault, metaWidthChar, true);
+                metaValChar.value = boldSearchTerms(searchTermVal, metaValChar.value, false);
 
-            var titleVal = escapeHtml(title.value) || titleDefault;
-
-            var metaValPx = escapeHtml(meta.value) || metaDefault;
-            metaValPx = boldSearchTerms(searchTermVal, metaValPx, false);
-            var metaValChar = fitStringToCharCount(meta.value || metaDefault, metaWidthChar, true);
-            metaValChar.value = boldSearchTerms(searchTermVal, metaValChar.value, false);
-
-            titleVal = fitStringToWidth(titleVal, containerWidth, 'google-result-title', true);
-            googleResultTitlePx.innerHTML = titleVal.value;
-            googleResultTitleChar.innerHTML = titleVal.value;
-            titleSize.innerHTML = titleVal.width + 'px of ' + containerWidth + 'px';
-            if (titleVal.overflow) {
-                title.className = 'error-outline';
-            } else {
-                title.className = '';
-            }
-
-            urlVal = fitStringToWidth(urlVal, containerWidth, 'google-result-url', false);
-            googleResultUrlPx.innerHTML = urlVal.value;
-            googleResultUrlChar.innerHTML = urlVal.value;
-
-            metaValPx = fitStringToWidth(metaValPx, metaWidthPx, 'google-result-meta', true, true);
-            googleResultMetaPx.innerHTML = metaValPx.value;
-            googleResultMetaChar.innerHTML = metaValChar.value;
-            metaSizePx.innerHTML = metaValPx.width + 'px of ' + metaWidthPx + 'px (guidelines before 2018)';
-            metaSizeChar.innerHTML = metaValChar.width + ' of ' + metaWidthChar + ' characters (guidelines for 2018)';
-            if (metaValPx.overflow) {
-                metaSizePx.className = 'error-text';
-            } else {
-                metaSizePx.className = '';
-            }
-            if (metaValChar.overflow) {
-                metaSizeChar.className = 'error-text';
-            } else {
-                metaSizeChar.className = '';
-            }
-        }
-
-        // inspired by @some's answer
-        // http://stackoverflow.com/questions/282758/truncate-a-string-nicely-to-fit-within-a-given-pixel-width
-        // str - the string to fix
-        // width - width in pixels of the container
-        // className - the class to apply to the string to get the correct font size
-        // truncateOnWord - boolean.  True if you do not want the function to truncate mid-word.
-        function fitStringToWidth(str, width, className, truncateOnWord) {
-            var result = {
-                value: str,
-                width: 0,
-                overflow: false
-            };
-
-            var span = document.createElement('span');
-            if (className) {
-                span.className = className;
-            }
-            span.style.display = 'inline';
-            span.style.visibility = 'hidden';
-            span.style.padding = '0px';
-            span.style['white-space'] = 'nowrap';
-            document.body.appendChild(span);
-            span.innerHTML = result.value;
-            result.width = span.offsetWidth;
-
-            while (span.offsetWidth > width) {
-                // at the very least, we're slicing off the last char
-                var sliceIndex = result.value.length - 2;
-
-                // slice off the ellipsis if there's one on the end
-                if (result.value.slice(-7) === '&#8230;') {
-                    sliceIndex -= 7;
+                titleVal = fitStringToWidth(titleVal, containerWidth, 'google-result-title', true);
+                googleResultTitlePx.innerHTML = titleVal.value;
+                googleResultTitleChar.innerHTML = titleVal.value;
+                titleSize.innerHTML = titleVal.width + 'px of ' + containerWidth + 'px';
+                if (titleVal.overflow) {
+                    title.className = 'error-outline';
+                } else {
+                    title.className = '';
                 }
 
-                result.value = result.value.slice(0, sliceIndex);
+                urlVal = fitStringToWidth(urlVal, containerWidth, 'google-result-url', false);
+                googleResultUrlPx.innerHTML = urlVal.value;
+                googleResultUrlChar.innerHTML = urlVal.value;
 
-                if (truncateOnWord) {
-                    // the prior slice already cleaned up the end of the string
-                    // now find the last word
-                    var lastIndex = result.value.lastIndexOf(' ');
-
-                    if (lastIndex === -1) {
-                        // it's one big word, so switch modes and we'll fix it up next time
-                        truncateOnWord = false;
-                    } else {
-                        // slice off the last word but leaving a trailing space
-                        result.value = result.value.slice(0, lastIndex + 1);
-                    }
+                metaValPx = fitStringToWidth(metaValPx, metaWidthPx, 'google-result-meta', true, true);
+                googleResultMetaPx.innerHTML = metaValPx.value;
+                googleResultMetaChar.innerHTML = metaValChar.value;
+                metaSizePx.innerHTML = metaValPx.width + 'px of ' + metaWidthPx + 'px (guidelines before 2018)';
+                metaSizeChar.innerHTML = metaValChar.width + ' of ' + metaWidthChar + ' characters (guidelines for 2018)';
+                if (metaValPx.overflow) {
+                    metaSizePx.className = 'error-text';
+                } else {
+                    metaSizePx.className = '';
                 }
+                if (metaValChar.overflow) {
+                    metaSizeChar.className = 'error-text';
+                } else {
+                    metaSizeChar.className = '';
+                }
+            }
 
-                // add on the ellipsis
-                result.value += '&#8230;';
-                result.overflow = true;
+            // inspired by @some's answer
+            // http://stackoverflow.com/questions/282758/truncate-a-string-nicely-to-fit-within-a-given-pixel-width
+            // str - the string to fix
+            // width - width in pixels of the container
+            // className - the class to apply to the string to get the correct font size
+            // truncateOnWord - boolean.  True if you do not want the function to truncate mid-word.
+            function fitStringToWidth(str, width, className, truncateOnWord) {
+                var result = {
+                    value: str,
+                    width: 0,
+                    overflow: false
+                };
+
+                var span = document.createElement('span');
+                if (className) {
+                    span.className = className;
+                }
+                span.style.display = 'inline';
+                span.style.visibility = 'hidden';
+                span.style.padding = '0px';
+                span.style['white-space'] = 'nowrap';
+                document.body.appendChild(span);
                 span.innerHTML = result.value;
+                result.width = span.offsetWidth;
+
+                while (span.offsetWidth > width) {
+                    // at the very least, we're slicing off the last char
+                    var sliceIndex = result.value.length - 2;
+
+                    // slice off the ellipsis if there's one on the end
+                    if (result.value.slice(-7) === '&#8230;') {
+                        sliceIndex -= 7;
+                    }
+
+                    result.value = result.value.slice(0, sliceIndex);
+
+                    if (truncateOnWord) {
+                        // the prior slice already cleaned up the end of the string
+                        // now find the last word
+                        var lastIndex = result.value.lastIndexOf(' ');
+
+                        if (lastIndex === -1) {
+                            // it's one big word, so switch modes and we'll fix it up next time
+                            truncateOnWord = false;
+                        } else {
+                            // slice off the last word but leaving a trailing space
+                            result.value = result.value.slice(0, lastIndex + 1);
+                        }
+                    }
+
+                    // add on the ellipsis
+                    result.value += '&#8230;';
+                    result.overflow = true;
+                    span.innerHTML = result.value;
+                }
+
+                document.body.removeChild(span);
+                return result;
             }
 
-            document.body.removeChild(span);
-            return result;
-        }
+            function fitStringToCharCount(str, charCount, truncateOnWord) {
+                if (!str) {
+                    str = "";
+                }
 
-        function fitStringToCharCount(str, charCount, truncateOnWord) {
-            if (!str) {
-                str = "";
-            }
+                var result = {
+                    value: str,
+                    width: str.length,
+                    overflow: str.length > charCount
+                };
 
-            var result = {
-                value: str,
-                width: str.length,
-                overflow: str.length > charCount
-            };
+                if (result.overflow) {
+                    if (truncateOnWord) {
+                        // now find the last word
+                        var lastIndex = result.value.lastIndexOf(' ');
 
-            if (result.overflow) {
-                if (truncateOnWord) {
-                    // now find the last word
-                    var lastIndex = result.value.lastIndexOf(' ');
-
-                    // check to see if the last word isn't ridiculously long
-                    if (lastIndex > charCount - 20 && lastIndex < charCount - 1) {
-                        // slice off the last word but leaving a trailing space
-                        result.value = result.value.slice(0, lastIndex + 1);
+                        // check to see if the last word isn't ridiculously long
+                        if (lastIndex > charCount - 20 && lastIndex < charCount - 1) {
+                            // slice off the last word but leaving a trailing space
+                            result.value = result.value.slice(0, lastIndex + 1);
+                        } else {
+                            // just truncate the text
+                            result.value = result.value.slice(0, charCount - 1)
+                        }
                     } else {
                         // just truncate the text
                         result.value = result.value.slice(0, charCount - 1)
                     }
+                    // escape the characters
+                    result.value = escapeHtml(result.value);
+                    // add on the ellipsis
+                    result.value += '&#8230;';
+                }
+
+                return result;
+            }
+
+            var entityMap = {
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': '&quot;',
+                "'": '&#39;',
+                "/": '&#x2F;'
+            };
+            function escapeHtml(string) {
+                return String(string).replace(/[&<>"'\/]/g, function (s) {
+                    return entityMap[s];
+                });
+            }
+
+            function boldSearchTerms(searchTerms, string, isUrl) {
+                var searchArray = searchTerms.split(' ').filter(function (str) { return !!str.length });
+                var stringArray = [];
+                var resultStr = '';
+
+                if (isUrl) {
+                    stringArray = splitUrl(string);
                 } else {
-                    // just truncate the text
-                    result.value = result.value.slice(0, charCount - 1)
+                    stringArray = splitNonUrl(string);
                 }
-                // escape the characters
-                result.value = escapeHtml(result.value);
-                // add on the ellipsis
-                result.value += '&#8230;';
+
+                stringArray.forEach(function (cur) {
+                    var result = cur;
+
+                    if (!cur.isPunctuation) {
+                        var isFound = false;
+
+                        for (var ii = 0; ii < searchArray.length; ii++) {
+                            if (cur.value.toLowerCase().indexOf(searchArray[ii].toLowerCase()) >= 0) {
+                                isFound = true;
+                                break;
+                            }
+                        }
+
+                        if (isFound) {
+                            result.value = '<b>' + result.value + '</b>';
+                        }
+
+                    }
+
+                    resultStr += result.value;
+
+                    if (!isUrl) {
+                        resultStr += ' ';
+                    }
+                });
+
+                return resultStr.trim();
             }
 
-            return result;
-        }
-
-        var entityMap = {
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            '"': '&quot;',
-            "'": '&#39;',
-            "/": '&#x2F;'
-        };
-        function escapeHtml(string) {
-            return String(string).replace(/[&<>"'\/]/g, function (s) {
-                return entityMap[s];
-            });
-        }
-
-        function boldSearchTerms(searchTerms, string, isUrl) {
-            var searchArray = searchTerms.split(' ').filter(function(str) { return !!str.length });
-            var stringArray = [];
-            var resultStr = '';
-
-            if (isUrl) {
-                stringArray = splitUrl(string);
-            } else {
-                stringArray = splitNonUrl(string);
+            function splitNonUrl(string) {
+                return resultArr = string.split(' ').map(function (cur) {
+                    return {
+                        value: cur,
+                        isPunctuation: false
+                    };
+                });
             }
 
-            stringArray.forEach(function(cur) {
-                var result = cur;
+            function splitUrl(string) {
+                var resultArr = [];
 
-                if (!cur.isPunctuation) {
-                    var isFound = false;
+                var buffer = '';
+                var isPunctuation = false;
+                for (var ii = 0; ii < string.length; ii++) {
+                    var char = string.charAt(ii);
 
-                    for (var ii = 0; ii < searchArray.length; ii++) {
-                        if (cur.value.toLowerCase().indexOf(searchArray[ii].toLowerCase()) >= 0) {
-                            isFound = true;
-                            break;
+                    if (char === '/' || char === '-' || char === ':' || char === '.') {
+                        if (!isPunctuation) {
+                            // write out the buffer
+                            if (buffer !== '') {
+                                resultArr.push({
+                                    value: buffer,
+                                    isPunctuation: isPunctuation
+                                });
+                            }
+
+                            // switch to saving punctuation
+                            buffer = '';
+                            isPunctuation = true;
+                        }
+                    } else if (char === '&' && string.slice(ii, ii + 6) === '&#x2F;') {
+                        if (!isPunctuation) {
+                            // write out the buffer
+                            if (buffer !== '') {
+                                resultArr.push({
+                                    value: buffer,
+                                    isPunctuation: isPunctuation
+                                });
+                            }
+
+                            // switch to saving punctuation & handle special case with url encoded slash
+                            buffer = '&#x2F;';
+                            isPunctuation = true;
+                            char = '';
+                            ii += 5;
+                        }
+                    } else {
+                        if (isPunctuation) {
+                            // write out the buffer
+                            if (buffer !== '') {
+                                resultArr.push({
+                                    value: buffer,
+                                    isPunctuation: isPunctuation
+                                });
+                            }
+
+                            // switch to saving letters
+                            buffer = '';
+                            isPunctuation = false;
                         }
                     }
 
-                    if (isFound) {
-                        result.value = '<b>' + result.value + '</b>';
-                    }
-
+                    buffer += char;
                 }
 
-                resultStr += result.value;
+                resultArr.push({
+                    value: buffer,
+                    isPunctuation: isPunctuation
+                });
 
-                if (!isUrl) {
-                    resultStr += ' ';
-                }
-            });
-
-            return resultStr.trim();
-        }
-
-        function splitNonUrl(string) {
-            return resultArr = string.split(' ').map(function(cur) {
-                return {
-                    value: cur,
-                    isPunctuation: false
-                };
-            });
-        }
-
-        function splitUrl(string) {
-            var resultArr = [];
-
-            var buffer = '';
-            var isPunctuation = false;
-            for (var ii = 0; ii < string.length; ii++) {
-                var char = string.charAt(ii);
-
-                if (char === '/' || char === '-' || char === ':' || char === '.') {
-                    if (!isPunctuation) {
-                        // write out the buffer
-                        if (buffer !== '') {
-                            resultArr.push({
-                                value: buffer,
-                                isPunctuation: isPunctuation
-                            });
-                        }
-
-                        // switch to saving punctuation
-                        buffer = '';
-                        isPunctuation = true;
-                    }
-                } else if (char === '&' && string.slice(ii, ii + 6) === '&#x2F;') {
-                    if (!isPunctuation) {
-                        // write out the buffer
-                        if (buffer !== '') {
-                            resultArr.push({
-                                value: buffer,
-                                isPunctuation: isPunctuation
-                            });
-                        }
-
-                        // switch to saving punctuation & handle special case with url encoded slash
-                        buffer = '&#x2F;';
-                        isPunctuation = true;
-                        char = '';
-                        ii += 5;
-                    }
-                } else {
-                    if (isPunctuation) {
-                        // write out the buffer
-                        if (buffer !== '') {
-                            resultArr.push({
-                                value: buffer,
-                                isPunctuation: isPunctuation
-                            });
-                        }
-
-                        // switch to saving letters
-                        buffer = '';
-                        isPunctuation = false;
-                    }
-                }
-
-                buffer += char;
+                return resultArr;
             }
 
-            resultArr.push({
-                value: buffer,
-                isPunctuation: isPunctuation
-            });
-
-            return resultArr;
-        }
-
-        changeDevice();
-    })();
-</script>
+            initialize();
+        })();
+    </script>
 </body>
+
 </html>
