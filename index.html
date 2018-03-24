@@ -105,11 +105,13 @@
     }
 </style>
 
+<h2>Simulated view for guidelines before 2018</h2>
 <div id="google-result-sim-px" class="google-result-sim">
     <div id="google-result-title-px" class="google-result-title"></div>
     <div id="google-result-url-px" class="google-result-url"></div>
     <div id="google-result-meta-px" class="google-result-meta"></div>
 </div>
+<h2>Simulated view for 2018 guidelines</h2>
 <div id="google-result-sim-char" class="google-result-sim">
     <div id="google-result-title-char" class="google-result-title"></div>
     <div id="google-result-url-char" class="google-result-url"></div>
@@ -243,7 +245,7 @@
             var metaValPx = escapeHtml(meta.value) || metaDefault;
             metaValPx = boldSearchTerms(searchTermVal, metaValPx, false);
             var metaValChar = fitStringToCharCount(meta.value || metaDefault, metaWidthChar, true);
-            metaValChar.value = boldSearchTerms(searchTermVal, escapeHtml(metaValChar.value), false);
+            metaValChar.value = boldSearchTerms(searchTermVal, metaValChar.value, false);
 
             titleVal = fitStringToWidth(titleVal, containerWidth, 'google-result-title', true);
             googleResultTitlePx.innerHTML = titleVal.value;
@@ -262,8 +264,8 @@
             metaValPx = fitStringToWidth(metaValPx, metaWidthPx, 'google-result-meta', true, true);
             googleResultMetaPx.innerHTML = metaValPx.value;
             googleResultMetaChar.innerHTML = metaValChar.value;
-            metaSizePx.innerHTML = metaValPx.width + 'px of ' + metaWidthPx + 'px';
-            metaSizeChar.innerHTML = metaValChar.width + ' of ' + metaWidthChar + ' characters';
+            metaSizePx.innerHTML = metaValPx.width + 'px of ' + metaWidthPx + 'px (guidelines before 2018)';
+            metaSizeChar.innerHTML = metaValChar.width + ' of ' + metaWidthChar + ' characters (guidelines for 2018)';
             if (metaValPx.overflow) {
                 metaSizePx.className = 'error-text';
             } else {
@@ -364,6 +366,8 @@
                     // just truncate the text
                     result.value = result.value.slice(0, charCount - 1)
                 }
+                // escape the characters
+                result.value = escapeHtml(result.value);
                 // add on the ellipsis
                 result.value += '&#8230;';
             }
